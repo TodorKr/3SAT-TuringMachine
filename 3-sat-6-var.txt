@@ -1,0 +1,334 @@
+# CURRENT STATE | HEAD | READ | WRITE | MOVE | NEXT STATE
+# COMBINATION COUNTER ROUTINE
+# - Get next combination: sum 1 to the current combination
+13 1 1 0 -1 13
+13 1 0 1 1 14
+# - Head 1 to position of x1
+14 1 0 0 1 14
+14 1 1 1 1 14
+14 1 # # -1 15
+# - Start function evaluation with new combination.
+#   Reset head 0 to the beginning of the function(tape):
+15 0 0 0 -1 15
+15 0 1 1 -1 15
+15 0 2 2 -1 15
+15 0 3 3 -1 15
+15 0 4 4 -1 15
+15 0 5 5 -1 15
+15 0 6 6 -1 15
+15 0 * * -1 15
+15 0 # # 1 0
+
+
+# HALT CONDITIONS
+# - WHEN ALL COMBINATIONS WERE TESTED -> NON-EXISTING SOLUTION (Blanks)
+13 1 * * 1 16
+16 1 0 _ 1 16
+16 1 1 _ 1 16
+16 1 # # 0 -1
+# - WHEN THE END OF THE FUNCTION HAS BEEN REACHED BEING IN 0 STATE
+0 0 * * 0 -1
+
+# OR CLAUSE CHECK
+# 1. Check 1st variable sign
+# 1.1. Negated
+0 0 0 0 1 1
+# 1.1.1. Check truthness
+
+# - For var 1:
+1 0 1 1 1 100
+#   Accepted (0):
+100 2 0 0 0 2
+#   Not accepted (1):
+100 2 1 1 0 7
+
+# - For var 2:
+1 0 2 2 1 101
+#   Accepted (0):
+101 3 0 0 0 2
+#   Not accepted (1):
+101 3 1 1 0 7
+
+# - For var 3:
+1 0 3 3 1 102
+#   Accepted (0):
+102 4 0 0 0 2
+#   Not accepted (1):
+102 4 1 1 0 7
+
+# - For var 4:
+1 0 4 4 1 103
+#   Accepted (0):
+103 5 0 0 0 2
+#   Not accepted (1):
+103 5 1 1 0 7
+
+# - For var 5:
+1 0 5 5 1 104
+#   Accepted (0): 
+104 6 0 0 0 2
+#   Not accepted (1):
+104 6 1 1 0 7
+
+# - For var 6:
+1 0 6 6 1 105
+#   Accepted (0): 
+105 7 0 0 0 2
+#   Not accepted (1):
+105 7 1 1 0 7
+
+# 1.2. Affirmed
+0 0 1 1 1 6
+# 1.2.1. Check truthness
+# - For var 1:
+6 0 1 1 1 200
+#   Accepted (1):
+200 2 1 1 0 2
+#   Not accepted (0):
+200 2 0 0 0 7
+
+# - For var 2:
+6 0 2 2 1 201
+#   Accepted (1):
+201 3 1 1 0 2
+#   Not accepted (0):
+201 3 0 0 0 7
+
+# - For var 3:
+6 0 3 3 1 202
+#   Accepted (1):
+202 4 1 1 0 2
+#   Not accepted (0):
+202 4 0 0 0 7
+
+# - For var 4:
+6 0 4 4 1 203
+#   Accepted (1):
+203 5 1 1 0 2
+#   Not accepted (1):
+203 5 0 0 0 7
+
+# - For var 5:
+6 0 5 5 1 204
+#   Accepted (1):
+204 6 1 1 0 2
+#   Not accepted (1):
+204 6 0 0 0 7
+
+# - For var 6:
+6 0 6 6 1 205
+#   Accepted (0): 
+205 7 0 0 0 2
+#   Not accepted (1):
+205 7 1 1 0 7
+
+# 1.3.1. FIRST VARIABLE SATISFIES OR CLAUSE
+# - Skip 2nd variable sign and value:
+# 1.3.1.1. Skip signs (0 or 1)
+2 0 0 0 1 3
+2 0 1 1 1 3
+# 1.3.1.2. Skip any variable (x possible from 1 to 5)
+3 0 1 1 1 4
+3 0 2 2 1 4
+3 0 3 3 1 4
+3 0 4 4 1 4
+3 0 5 5 1 4
+3 0 6 6 1 4
+
+# - Skip 3rd variable sign and value:
+# 1.3.1.3. Skip signs (0 or 1)
+4 0 0 0 1 5
+4 0 1 1 1 5
+# 1.3.1.4. Skip any variable (x possible from 1 to 5)
+5 0 1 1 1 0
+5 0 2 2 1 0
+5 0 3 3 1 0
+5 0 4 4 1 0
+5 0 5 5 1 0
+5 0 6 6 1 0
+
+# 1.3.2. FIRST VARIABLE NOT SATISFYING OR CLAUSE
+# 2. Check 2nd variable sign:
+# - Negated
+7 0 0 0 1 8
+# 2.1.1. Check truthness
+# - For var 1:
+8 0 1 1 1 300
+#   Accepted (0): (Skip last variable sign and value)
+300 2 0 0 0 4
+#   Not accepted (1): (Check 3rd variable)
+300 2 1 1 0 9
+
+# - For var 2:
+8 0 2 2 1 301
+#   Accepted (0):
+301 3 0 0 0 4
+#   Not accepted (1):
+301 3 1 1 0 9
+
+# - For var 3:
+8 0 3 3 1 302
+#   Accepted (0):
+302 4 0 0 0 4
+#   Not accepted (1):
+302 4 1 1 0 9
+
+# - For var 4:
+8 0 4 4 1 303
+#   Accepted (0):
+303 5 0 0 0 4
+#   Not accepted (1):
+303 5 1 1 0 9
+
+# - For var 5:
+8 0 5 5 1 304
+#   Accepted (0):
+304 6 0 0 0 4
+#   Not accepted (1):
+304 6 1 1 0 9
+
+# - For var 6:
+8 0 6 6 1 305
+#   Accepted (0):
+305 7 0 0 0 4
+#   Not accepted (1):
+305 7 1 1 0 9
+
+#2.2. Affirmed
+7 0 1 1 1 11
+# 2.2.1. Check truthness
+# - For var 1:
+11 0 1 1 1 400
+#   Accepted (1):
+400 2 1 1 0 4
+#   Not accepted (0):
+400 2 0 0 0 9
+
+# - For var 2:
+11 0 2 2 1 401
+#   Accepted (1):
+401 3 1 1 0 4
+#   Not accepted (0):
+401 3 0 0 0 9
+
+# - For var 3:
+11 0 3 3 1 402
+#   Accepted (1):
+402 4 1 1 0 4
+#   Not accepted (0):
+402 4 0 0 0 9
+
+# - For var 4:
+11 0 4 4 1 403
+#   Accepted (1):
+403 5 1 1 0 4
+#   Not accepted (1):
+403 5 0 0 0 9
+
+# - For var 5:
+11 0 5 5 1 404
+#   Accepted (1):
+404 6 1 1 0 4
+#   Not accepted (1):
+404 6 0 0 0 9
+
+# - For var 6:
+11 0 6 6 1 405
+#   Accepted (1):
+405 7 1 1 0 4
+#   Not accepted (1):
+405 7 0 0 0 9
+
+# 2.3.2. SECOND VARIABLE NOT SATISFYING OR CLAUSE
+# 3. Check 3rd variable sign:
+# - Negated
+9 0 0 0 1 10
+# 1.1.1. Check truthness
+
+# - For var 1:
+10 0 1 1 1 500
+#   Accepted (0): (Keep evaluating next OR clause)
+500 2 0 0 0 0
+#   Not accepted (1): (Not a solution -> Go to next combination)
+500 2 1 1 0 13
+
+# - For var 2:
+10 0 2 2 1 501
+#   Accepted (0):
+501 3 0 0 0 0
+#   Not accepted (1):
+501 3 1 1 0 13
+
+# - For var 3:
+10 0 3 3 1 502
+#   Accepted (0):
+502 4 0 0 0 0
+#   Not accepted (1):
+502 4 1 1 0 13
+
+# - For var 4:
+10 0 4 4 1 503
+#   Accepted (0):
+503 5 0 0 0 0
+#   Not accepted (1):
+503 5 1 1 0 13
+
+# - For var 5:
+10 0 5 5 1 504
+#   Accepted (0):
+504 6 0 0 0 0
+#   Not accepted (1):
+504 6 1 1 0 13
+
+# - For var 6:
+10 0 6 6 1 505
+#   Accepted (0):
+505 7 0 0 0 0
+#   Not accepted (1):
+505 7 1 1 0 13
+
+#1.2. Affirmed
+9 0 1 1 1 12
+# 1.2.1. Check truthness
+
+# - For var 1:
+12 0 1 1 1 600
+#   Accepted (1): (Keep evaluating next OR clause)
+600 2 1 1 0 0
+#   Not accepted (0): (Not a solution -> Go to next combination)
+600 2 0 0 0 13
+
+# - For var 2:
+12 0 2 2 1 601
+#   Accepted (1):
+601 3 1 1 0 0
+#   Not accepted (0):
+601 3 0 0 0 13
+
+# - For var 3:
+12 0 3 3 1 602
+#   Accepted (1):
+602 4 1 1 0 0
+#   Not accepted (0):
+602 4 0 0 0 13
+
+# - For var 4:
+12 0 4 4 1 603
+#   Accepted (1):
+603 5 1 1 0 0
+#   Not accepted (1):
+603 5 0 0 0 13
+
+# - For var 5:
+12 0 5 5 1 604
+#   Accepted (1):
+604 6 1 1 0 0
+#   Not accepted (1):
+604 6 0 0 0 13
+
+# - For var 6:
+12 0 6 6 1 605
+#   Accepted (1):
+605 7 1 1 0 0
+#   Not accepted (1):
+605 7 0 0 0 13
